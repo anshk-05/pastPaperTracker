@@ -1,4 +1,5 @@
 export type PaperStatus = "Not Started" | "Completed";
+export type PaperSource = "catalog" | "custom";
 
 export interface PaperPerformance {
   status: PaperStatus;
@@ -12,6 +13,7 @@ export interface PaperPerformance {
 
 export interface Paper {
   id: string;
+  source: PaperSource;
   year: number;
   series: string;
   seriesLabel: string;
@@ -35,6 +37,44 @@ export interface Subject {
 export interface LocalDatabase {
   targetSeries: string;
   subjects: Subject[];
+}
+
+export interface CustomPaper extends Paper {
+  subjectId: string;
+}
+
+export interface RemovedPaper {
+  subjectId: string;
+  subjectName: string;
+  paper: Paper;
+}
+
+export interface TrackerState {
+  progressByPaperId: Record<string, PaperPerformance>;
+  removedPaperIds: string[];
+  customPapers: CustomPaper[];
+}
+
+export interface TrackerSnapshot {
+  database: LocalDatabase;
+  removedPapers: RemovedPaper[];
+}
+
+export interface PaperFormValues {
+  status: PaperStatus;
+  score?: number;
+  percentage?: number;
+  grade?: string;
+  topicsForImprovement: string[];
+  notes?: string;
+}
+
+export interface CreatePaperInput {
+  subjectId: string;
+  year: number;
+  series: string;
+  paperCode: string;
+  assessmentComponent: string;
 }
 
 export interface SubjectProgress {
