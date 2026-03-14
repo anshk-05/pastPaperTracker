@@ -1,0 +1,913 @@
+{
+  "metadata": {
+    "source_file": "Ballu - GCSE Past Papers By Exam Board.pdf",
+    "generated_from": "Uploaded PDF summary of GCSE past papers by exam board",
+    "organization": "Grouped by subject, then by year",
+    "notes": [
+      "Data transcribed from the uploaded PDF.",
+      "Years are sorted descending in the Markdown output.",
+      "French entries are legacy specification papers (1FR0) noted in the source as prep for 2026."
+    ]
+  },
+  "subjects": {
+    "Mathematics (Pearson Edexcel 1MA1)": {
+      "2024": [
+        {
+          "series": "June",
+          "paper_code": "1MA1/1H",
+          "title": "Paper 1: Non-Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/2H",
+          "title": "Paper 2: Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/3H",
+          "title": "Paper 3: Calculator (Higher)"
+        }
+      ],
+      "2023": [
+        {
+          "series": "November",
+          "paper_code": "1MA1/1H",
+          "title": "Paper 1: Non-Calculator (Higher)"
+        },
+        {
+          "series": "November",
+          "paper_code": "1MA1/2H",
+          "title": "Paper 2: Calculator (Higher)"
+        },
+        {
+          "series": "November",
+          "paper_code": "1MA1/3H",
+          "title": "Paper 3: Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/1H",
+          "title": "Paper 1: Non-Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/2H",
+          "title": "Paper 2: Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/3H",
+          "title": "Paper 3: Calculator (Higher)"
+        }
+      ],
+      "2022": [
+        {
+          "series": "November",
+          "paper_code": "1MA1/1H",
+          "title": "Paper 1: Non-Calculator (Higher)"
+        },
+        {
+          "series": "November",
+          "paper_code": "1MA1/2H",
+          "title": "Paper 2: Calculator (Higher)"
+        },
+        {
+          "series": "November",
+          "paper_code": "1MA1/3H",
+          "title": "Paper 3: Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/1H",
+          "title": "Paper 1: Non-Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/2H",
+          "title": "Paper 2: Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/3H",
+          "title": "Paper 3: Calculator (Higher)"
+        }
+      ],
+      "2021": [
+        {
+          "series": "November",
+          "paper_code": "1MA1/1H",
+          "title": "Paper 1: Non-Calculator (Higher)"
+        },
+        {
+          "series": "November",
+          "paper_code": "1MA1/2H",
+          "title": "Paper 2: Calculator (Higher)"
+        },
+        {
+          "series": "November",
+          "paper_code": "1MA1/3H",
+          "title": "Paper 3: Calculator (Higher)"
+        }
+      ],
+      "2020": [
+        {
+          "series": "November",
+          "paper_code": "1MA1/1H",
+          "title": "Paper 1: Non-Calculator (Higher)"
+        },
+        {
+          "series": "November",
+          "paper_code": "1MA1/2H",
+          "title": "Paper 2: Calculator (Higher)"
+        },
+        {
+          "series": "November",
+          "paper_code": "1MA1/3H",
+          "title": "Paper 3: Calculator (Higher)"
+        }
+      ],
+      "2019": [
+        {
+          "series": "June",
+          "paper_code": "1MA1/1H",
+          "title": "Paper 1: Non-Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/2H",
+          "title": "Paper 2: Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/3H",
+          "title": "Paper 3: Calculator (Higher)"
+        }
+      ],
+      "2018": [
+        {
+          "series": "November",
+          "paper_code": "1MA1/1H",
+          "title": "Paper 1: Non-Calculator (Higher)"
+        },
+        {
+          "series": "November",
+          "paper_code": "1MA1/2H",
+          "title": "Paper 2: Calculator (Higher)"
+        },
+        {
+          "series": "November",
+          "paper_code": "1MA1/3H",
+          "title": "Paper 3: Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/1H",
+          "title": "Paper 1: Non-Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/2H",
+          "title": "Paper 2: Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/3H",
+          "title": "Paper 3: Calculator (Higher)"
+        }
+      ],
+      "2017": [
+        {
+          "series": "November",
+          "paper_code": "1MA1/1H",
+          "title": "Paper 1: Non-Calculator (Higher)"
+        },
+        {
+          "series": "November",
+          "paper_code": "1MA1/2H",
+          "title": "Paper 2: Calculator (Higher)"
+        },
+        {
+          "series": "November",
+          "paper_code": "1MA1/3H",
+          "title": "Paper 3: Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/1H",
+          "title": "Paper 1: Non-Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/2H",
+          "title": "Paper 2: Calculator (Higher)"
+        },
+        {
+          "series": "June",
+          "paper_code": "1MA1/3H",
+          "title": "Paper 3: Calculator (Higher)"
+        }
+      ]
+    },
+    "Biology (Pearson Edexcel 1BI0)": {
+      "2024": [
+        {
+          "series": "June",
+          "paper_code": "1BI0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "June",
+          "paper_code": "1BI0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2023": [
+        {
+          "series": "June",
+          "paper_code": "1BI0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "June",
+          "paper_code": "1BI0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2022": [
+        {
+          "series": "June",
+          "paper_code": "1BI0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "June",
+          "paper_code": "1BI0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2021": [
+        {
+          "series": "Nov",
+          "paper_code": "1BI0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "Nov",
+          "paper_code": "1BI0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2020": [
+        {
+          "series": "Nov",
+          "paper_code": "1BI0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "Nov",
+          "paper_code": "1BI0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2019": [
+        {
+          "series": "June",
+          "paper_code": "1BI0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "June",
+          "paper_code": "1BI0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2018": [
+        {
+          "series": "June",
+          "paper_code": "1BI0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "June",
+          "paper_code": "1BI0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ]
+    },
+    "Chemistry (Pearson Edexcel 1CH0)": {
+      "2024": [
+        {
+          "series": "June",
+          "paper_code": "1CH0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "June",
+          "paper_code": "1CH0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2023": [
+        {
+          "series": "June",
+          "paper_code": "1CH0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "June",
+          "paper_code": "1CH0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2022": [
+        {
+          "series": "June",
+          "paper_code": "1CH0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "June",
+          "paper_code": "1CH0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2021": [
+        {
+          "series": "Nov",
+          "paper_code": "1CH0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "Nov",
+          "paper_code": "1CH0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2020": [
+        {
+          "series": "Nov",
+          "paper_code": "1CH0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "Nov",
+          "paper_code": "1CH0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2019": [
+        {
+          "series": "June",
+          "paper_code": "1CH0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "June",
+          "paper_code": "1CH0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2018": [
+        {
+          "series": "June",
+          "paper_code": "1CH0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "June",
+          "paper_code": "1CH0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ]
+    },
+    "Physics (Pearson Edexcel 1PH0)": {
+      "2024": [
+        {
+          "series": "June",
+          "paper_code": "1PH0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "June",
+          "paper_code": "1PH0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2023": [
+        {
+          "series": "June",
+          "paper_code": "1PH0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "June",
+          "paper_code": "1PH0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2022": [
+        {
+          "series": "June",
+          "paper_code": "1PH0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "June",
+          "paper_code": "1PH0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2021": [
+        {
+          "series": "Nov",
+          "paper_code": "1PH0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "Nov",
+          "paper_code": "1PH0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2020": [
+        {
+          "series": "Nov",
+          "paper_code": "1PH0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "Nov",
+          "paper_code": "1PH0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2019": [
+        {
+          "series": "June",
+          "paper_code": "1PH0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "June",
+          "paper_code": "1PH0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ],
+      "2018": [
+        {
+          "series": "June",
+          "paper_code": "1PH0/1H",
+          "title": "Paper 1 Higher"
+        },
+        {
+          "series": "June",
+          "paper_code": "1PH0/2H",
+          "title": "Paper 2 Higher"
+        }
+      ]
+    },
+    "English Language (Eduqas C700)": {
+      "2024": [
+        {
+          "series": "June",
+          "paper_code": "C700U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "June",
+          "paper_code": "C700U20-1",
+          "title": "Component 2"
+        }
+      ],
+      "2023": [
+        {
+          "series": "June",
+          "paper_code": "C700U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "June",
+          "paper_code": "C700U20-1",
+          "title": "Component 2"
+        }
+      ],
+      "2022": [
+        {
+          "series": "Nov",
+          "paper_code": "C700U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "June",
+          "paper_code": "C700U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "June",
+          "paper_code": "C700U20-1",
+          "title": "Component 2"
+        }
+      ],
+      "2021": [
+        {
+          "series": "Nov",
+          "paper_code": "C700U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "Nov",
+          "paper_code": "C700U20-1",
+          "title": "Component 2"
+        }
+      ],
+      "2020": [
+        {
+          "series": "Nov",
+          "paper_code": "C700U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "Nov",
+          "paper_code": "C700U20-1",
+          "title": "Component 2"
+        }
+      ],
+      "2019": [
+        {
+          "series": "Nov",
+          "paper_code": "C700U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "June",
+          "paper_code": "C700U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "June",
+          "paper_code": "C700U20-1",
+          "title": "Component 2"
+        }
+      ],
+      "2018": [
+        {
+          "series": "Nov",
+          "paper_code": "C700U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "June",
+          "paper_code": "C700U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "June",
+          "paper_code": "C700U20-1",
+          "title": "Component 2"
+        }
+      ],
+      "2017": [
+        {
+          "series": "Nov",
+          "paper_code": "C700U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "Nov",
+          "paper_code": "C700U20-1",
+          "title": "Component 2"
+        },
+        {
+          "series": "June",
+          "paper_code": "C700U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "June",
+          "paper_code": "C700U20-1",
+          "title": "Component 2"
+        }
+      ]
+    },
+    "English Literature (Eduqas C720)": {
+      "2024": [
+        {
+          "series": "June",
+          "paper_code": "C720U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "June",
+          "paper_code": "C720U20-1",
+          "title": "Component 2"
+        }
+      ],
+      "2023": [
+        {
+          "series": "June",
+          "paper_code": "C720U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "June",
+          "paper_code": "C720U20-1",
+          "title": "Component 2"
+        }
+      ],
+      "2022": [
+        {
+          "series": "June",
+          "paper_code": "C720U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "June",
+          "paper_code": "C720U20-1",
+          "title": "Component 2"
+        }
+      ],
+      "2020": [
+        {
+          "series": "Nov",
+          "paper_code": "C720U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "Nov",
+          "paper_code": "C720U20-1",
+          "title": "Component 2"
+        }
+      ],
+      "2019": [
+        {
+          "series": "May",
+          "paper_code": "C720U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "May",
+          "paper_code": "C720U20-1",
+          "title": "Component 2"
+        }
+      ],
+      "2018": [
+        {
+          "series": "May",
+          "paper_code": "C720U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "May",
+          "paper_code": "C720U20-1",
+          "title": "Component 2"
+        }
+      ],
+      "2017": [
+        {
+          "series": "May",
+          "paper_code": "C720U10-1",
+          "title": "Component 1"
+        },
+        {
+          "series": "May",
+          "paper_code": "C720U20-1",
+          "title": "Component 2"
+        }
+      ]
+    },
+    "Geography (OCR J384)": {
+      "2024": [
+        {
+          "series": "June",
+          "paper_code": "J384/01, 02, 03",
+          "title": "Papers 1, 2, 3"
+        }
+      ],
+      "2023": [
+        {
+          "series": "June",
+          "paper_code": "J384/01, 02, 03",
+          "title": "Papers 1, 2, 3"
+        }
+      ],
+      "2022": [
+        {
+          "series": "June",
+          "paper_code": "J384/01, 02, 03",
+          "title": "Papers 1, 2, 3"
+        }
+      ],
+      "2021": [
+        {
+          "series": "Nov",
+          "paper_code": "J384/01, 02, 03",
+          "title": "Papers 1, 2, 3"
+        }
+      ],
+      "2020": [
+        {
+          "series": "Nov",
+          "paper_code": "J384/01, 02, 03",
+          "title": "Papers 1, 2, 3"
+        }
+      ],
+      "2019": [
+        {
+          "series": "June",
+          "paper_code": "J384/01, 02, 03",
+          "title": "Papers 1, 2, 3"
+        }
+      ],
+      "2018": [
+        {
+          "series": "June",
+          "paper_code": "J384/01, 02, 03",
+          "title": "Papers 1, 2, 3"
+        }
+      ]
+    },
+    "Classical Civilisation (OCR J199)": {
+      "2024": [
+        {
+          "series": "June",
+          "paper_code": "J199/11 & 23",
+          "title": "Myth/Rel & War"
+        }
+      ],
+      "2023": [
+        {
+          "series": "June",
+          "paper_code": "J199/11 & 23",
+          "title": "Myth/Rel & War"
+        }
+      ],
+      "2022": [
+        {
+          "series": "June",
+          "paper_code": "J199/11 & 23",
+          "title": "Myth/Rel & War"
+        }
+      ],
+      "2021": [
+        {
+          "series": "Nov",
+          "paper_code": "J199/11 & 23",
+          "title": "Myth/Rel & War"
+        }
+      ],
+      "2020": [
+        {
+          "series": "Nov",
+          "paper_code": "J199/11 & 23",
+          "title": "Myth/Rel & War"
+        }
+      ],
+      "2019": [
+        {
+          "series": "June",
+          "paper_code": "J199/11 & 23",
+          "title": "Myth/Rel & War"
+        }
+      ]
+    },
+    "Religious Studies (AQA 8062)": {
+      "2024": [
+        {
+          "series": "June",
+          "paper_code": "8062/1 & 2A",
+          "title": "Comp 1 & 2"
+        }
+      ],
+      "2023": [
+        {
+          "series": "June",
+          "paper_code": "8062/1 & 2A",
+          "title": "Comp 1 & 2"
+        }
+      ],
+      "2022": [
+        {
+          "series": "June",
+          "paper_code": "8062/1 & 2A",
+          "title": "Comp 1 & 2"
+        }
+      ],
+      "2021": [
+        {
+          "series": "Nov",
+          "paper_code": "8062/1 & 2A",
+          "title": "Comp 1 & 2"
+        }
+      ],
+      "2020": [
+        {
+          "series": "Nov",
+          "paper_code": "8062/1 & 2A",
+          "title": "Comp 1 & 2"
+        }
+      ],
+      "2019": [
+        {
+          "series": "June",
+          "paper_code": "8062/1 & 2A",
+          "title": "Comp 1 & 2"
+        }
+      ],
+      "2018": [
+        {
+          "series": "June",
+          "paper_code": "8062/1 & 2A",
+          "title": "Comp 1 & 2"
+        }
+      ]
+    },
+    "French (Pearson Edexcel 1FR0 legacy papers for 2026 prep)": {
+      "2024": [
+        {
+          "series": "June",
+          "paper_code": "1FR0/1H, 3H, 4H",
+          "title": "Listening, Reading, Writing"
+        }
+      ],
+      "2023": [
+        {
+          "series": "June",
+          "paper_code": "1FR0/1H, 3H, 4H",
+          "title": "Listening, Reading, Writing"
+        }
+      ],
+      "2022": [
+        {
+          "series": "June",
+          "paper_code": "1FR0/1H, 3H, 4H",
+          "title": "Listening, Reading, Writing"
+        }
+      ],
+      "2021": [
+        {
+          "series": "Nov",
+          "paper_code": "1FR0/1H, 3H, 4H",
+          "title": "Listening, Reading, Writing"
+        }
+      ],
+      "2020": [
+        {
+          "series": "Nov",
+          "paper_code": "1FR0/1H, 3H, 4H",
+          "title": "Listening, Reading, Writing"
+        }
+      ],
+      "2019": [
+        {
+          "series": "June",
+          "paper_code": "1FR0/1H, 3H, 4H",
+          "title": "Listening, Reading, Writing"
+        }
+      ],
+      "2018": [
+        {
+          "series": "June",
+          "paper_code": "1FR0/1H, 3H, 4H",
+          "title": "Listening, Reading, Writing"
+        }
+      ]
+    },
+    "Art and Design (AQA 8201)": {
+      "2024": [
+        {
+          "series": "Jan/June",
+          "paper_code": "8201/X",
+          "title": "ESA Theme Paper"
+        }
+      ],
+      "2023": [
+        {
+          "series": "Jan/June",
+          "paper_code": "8201/X",
+          "title": "ESA Theme Paper"
+        }
+      ],
+      "2022": [
+        {
+          "series": "Jan/June",
+          "paper_code": "8201/X",
+          "title": "ESA Theme Paper"
+        }
+      ],
+      "2019": [
+        {
+          "series": "Jan/June",
+          "paper_code": "8201/X",
+          "title": "ESA Theme Paper"
+        }
+      ],
+      "2018": [
+        {
+          "series": "Jan/June",
+          "paper_code": "8201/X",
+          "title": "ESA Theme Paper"
+        }
+      ]
+    }
+  }
+}
