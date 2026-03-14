@@ -10,14 +10,17 @@ export interface ReviewTopicGroup {
 
 export function buildSubjectProgress(subject: Subject): SubjectProgress {
   const completedPapers = subject.papers.filter(
-    (paper) => paper.status === "Completed",
+    (paper) => paper.performance.status === "Completed",
   ).length;
-  const reviewTopics = subject.papers.flatMap((paper) => paper.reviewTopics);
+  const reviewTopics = subject.papers.flatMap(
+    (paper) => paper.performance.topicsForImprovement,
+  );
 
   return {
     subjectId: subject.id,
     subjectName: subject.name,
     specificationLabel: `${subject.examBoard} ${subject.specificationCode}`,
+    latestSeriesLabel: subject.papers[0]?.seriesLabel ?? "No papers loaded",
     completedPapers,
     totalPapers: subject.papers.length,
     completionPercent:
@@ -37,7 +40,9 @@ export function buildReviewTopicGroups(
     .map((subject) => ({
       subjectId: subject.id,
       subjectName: subject.name,
-      topics: subject.papers.flatMap((paper) => paper.reviewTopics),
+      topics: subject.papers.flatMap(
+        (paper) => paper.performance.topicsForImprovement,
+      ),
     }))
     .filter((group) => group.topics.length > 0);
 }

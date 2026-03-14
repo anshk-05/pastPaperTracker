@@ -1,22 +1,29 @@
 export type PaperStatus = "Not Started" | "Completed";
 
-export interface Paper {
-  id: string;
-  paperCode: string;
-  paperName: string;
-  assessmentWindow: string;
+export interface PaperPerformance {
   status: PaperStatus;
   score?: number;
-  maxScore?: number;
+  percentage?: number;
   grade?: string;
-  reviewTopics: string[];
+  topicsForImprovement: string[];
   notes?: string;
-  updatedAt: string;
+  updatedAt?: string;
+}
+
+export interface Paper {
+  id: string;
+  year: number;
+  series: string;
+  seriesLabel: string;
+  paperCode: string;
+  assessmentComponent: string;
+  performance: PaperPerformance;
 }
 
 export interface Subject {
   id: string;
   name: string;
+  catalogLabel: string;
   examBoard: string;
   specificationCode: string;
   tier?: string;
@@ -34,6 +41,7 @@ export interface SubjectProgress {
   subjectId: string;
   subjectName: string;
   specificationLabel: string;
+  latestSeriesLabel: string;
   completedPapers: number;
   totalPapers: number;
   completionPercent: number;
