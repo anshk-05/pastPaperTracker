@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LogoutButton } from "@/components/auth/logout-button";
 import {
   buildSubjectTrackerSummary,
 } from "@/lib/db/schema";
@@ -70,6 +71,7 @@ export function SubjectTracker({ subject }: SubjectTrackerProps) {
             >
               Manage papers
             </Link>
+            <LogoutButton />
             <a
               href="#paper-list"
               className="inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-slate-200"

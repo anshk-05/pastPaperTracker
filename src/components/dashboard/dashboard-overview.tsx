@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { LogoutButton } from "@/components/auth/logout-button";
+import { getAuthSettings } from "@/lib/auth";
 import { buildSubjectProgress } from "@/lib/db/schema";
 import { LocalDatabase } from "@/lib/types";
 
@@ -13,6 +15,7 @@ function formatMetaLine(parts: Array<string | undefined>) {
 export function DashboardOverview({
   database,
 }: DashboardOverviewProps) {
+  const { studentName } = getAuthSettings();
   const subjectProgress = database.subjects.map(buildSubjectProgress);
   const totalCompleted = subjectProgress.reduce(
     (sum, subject) => sum + subject.completedPapers,
@@ -39,7 +42,7 @@ export function DashboardOverview({
                 GCSE Past Paper Tracker
               </p>
               <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                Summer 2026 revision progress at a glance
+                {studentName}'s Summer 2026 revision tracker
               </h1>
               <p className="text-sm leading-6 text-slate-300 sm:text-base">
                 A mobile-friendly dashboard for seeing which papers are done,
@@ -53,6 +56,7 @@ export function DashboardOverview({
                 >
                   Manage papers
                 </Link>
+                <LogoutButton />
               </div>
             </div>
 

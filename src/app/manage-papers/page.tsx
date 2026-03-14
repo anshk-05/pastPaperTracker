@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LogoutButton } from "@/components/auth/logout-button";
 import { PaperManagementConsole } from "@/components/manage/paper-management-console";
 import { loadTrackerSnapshot } from "@/lib/db/storage";
 
@@ -17,6 +18,9 @@ export default async function ManagePapersPage() {
           >
             Back to dashboard
           </Link>
+          <div className="mt-3">
+            <LogoutButton />
+          </div>
 
           <div className="mt-6 space-y-3">
             <p className="text-sm font-medium uppercase tracking-[0.25em] text-fuchsia-300">

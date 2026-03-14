@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LogoutButton } from "@/components/auth/logout-button";
 import { PaperProgressForm } from "@/components/papers/paper-progress-form";
 import { buildSubjectTrackerSummary } from "@/lib/db/schema";
 import { Paper, Subject } from "@/lib/types";
@@ -34,6 +35,7 @@ export function PaperDetailView({ subject, paper }: PaperDetailViewProps) {
             >
               Manage papers
             </Link>
+            <LogoutButton />
           </div>
 
           <div className="mt-6 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
