@@ -32,6 +32,19 @@ export function isCosmosConfigured() {
   return Boolean(settings.connectionString && settings.databaseName && settings.containerName);
 }
 
+export function getCosmosDebugSettings() {
+  const settings = getCosmosSettings();
+
+  return {
+    configured: isCosmosConfigured(),
+    databaseName: settings.databaseName,
+    containerName: settings.containerName,
+    connectionStringPreview: settings.connectionString
+      ? `${settings.connectionString.slice(0, 30)}...`
+      : "",
+  };
+}
+
 async function createContainer() {
   const settings = getCosmosSettings();
 
@@ -116,4 +129,15 @@ export async function readTrackerStateFromCosmos() {
 export async function writeTrackerStateToCosmos(state: TrackerState) {
   const container = await getContainer();
   await container.items.upsert(buildDocument(state));
+}
+
+export async function testCosmosConnection() {
+  const container = await getContainer();
+  const { resource } = await container.database.read();
+
+  return {
+    ok: true,
+    databaseId: resource?.id,
+    containerId: container.id,
+  };
 }

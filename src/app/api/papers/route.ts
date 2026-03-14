@@ -19,12 +19,20 @@ function isCreatePaperInput(value: unknown): value is CreatePaperInput {
 }
 
 export async function POST(request: Request) {
-  const payload = await request.json();
+  try {
+    const payload = await request.json();
 
-  if (!isCreatePaperInput(payload)) {
-    return NextResponse.json({ error: "Invalid paper payload." }, { status: 400 });
+    if (!isCreatePaperInput(payload)) {
+      return NextResponse.json({ error: "Invalid paper payload." }, { status: 400 });
+    }
+
+    await addCustomPaper(payload);
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    console.error("Failed to add custom paper.", error);
+    const message =
+      error instanceof Error ? error.message : "Unexpected server error.";
+
+    return NextResponse.json({ error: message }, { status: 500 });
   }
-
-  await addCustomPaper(payload);
-  return NextResponse.json({ ok: true });
 }

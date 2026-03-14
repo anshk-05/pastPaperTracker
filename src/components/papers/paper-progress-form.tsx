@@ -53,7 +53,10 @@ export function PaperProgressForm({ paper }: PaperProgressFormProps) {
     setIsSaving(false);
 
     if (!response.ok) {
-      setMessage("Save failed. Please try again.");
+      const payload = (await response.json().catch(() => null)) as
+        | { error?: string }
+        | null;
+      setMessage(payload?.error ?? "Save failed. Please try again.");
       return;
     }
 
