@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { StudySessionWithPaper, Subject } from "@/lib/types";
 
 type CalendarPlannerProps = {
@@ -66,16 +66,12 @@ function statusBadgeClass(status: string) {
     : "bg-amber-500/15 text-amber-200";
 }
 
-function flattenPapers(subjects: Subject[]) {
-  return subjects.flatMap((subject) =>
-    subject.papers.map((paper) => ({
-      paperId: paper.id,
-      subjectId: subject.id,
-      subjectName: subject.name,
-      label: `${subject.name} | ${paper.paperCode} | ${paper.assessmentComponent}`,
-      paper,
-    })),
-  );
+function getLatestYear(subject: Subject | undefined) {
+  if (!subject || subject.papers.length === 0) {
+    return "";
+  }
+
+  return `${Math.max(...subject.papers.map((paper) => paper.year))}`;
 }
 
 export function CalendarPlanner({
@@ -83,12 +79,30 @@ export function CalendarPlanner({
   studySessions,
 }: CalendarPlannerProps) {
   const router = useRouter();
-  const papers = useMemo(() => flattenPapers(subjects), [subjects]);
   const today = new Date();
+  const [selectedSubjectId, setSelectedSubjectId] = useState(subjects[0]?.id ?? "");
   const [activeMonth, setActiveMonth] = useState(
     new Date(today.getFullYear(), today.getMonth(), 1),
   );
-  const [paperId, setPaperId] = useState(papers[0]?.paperId ?? "");
+  const [selectedYear, setSelectedYear] = useState(
+    getLatestYear(subjects[0]),
+  );
+  const selectedSubject = subjects.find((subject) => subject.id === selectedSubjectId);
+  const availableYears = useMemo(
+    () =>
+      Array.from(
+        new Set((selectedSubject?.papers ?? []).map((paper) => `${paper.year}`)),
+      ).sort((left, right) => Number(right) - Number(left)),
+    [selectedSubject],
+  );
+  const availablePapers = useMemo(
+    () =>
+      (selectedSubject?.papers ?? []).filter(
+        (paper) => `${paper.year}` === selectedYear,
+      ),
+    [selectedSubject, selectedYear],
+  );
+  const [paperId, setPaperId] = useState("");
   const [date, setDate] = useState(formatYmd(today));
   const [notes, setNotes] = useState("");
   const [plannerMessage, setPlannerMessage] = useState<string | null>(null);
@@ -113,6 +127,27 @@ export function CalendarPlanner({
   const upcomingSessions = [...studySessions]
     .filter((session) => session.date >= formatYmd(today))
     .slice(0, 8);
+
+  useEffect(() => {
+    if (!selectedSubject) {
+      if (selectedYear !== "") {
+        setSelectedYear("");
+      }
+      if (paperId !== "") {
+        setPaperId("");
+      }
+      return;
+    }
+
+    if (!availableYears.includes(selectedYear)) {
+      setSelectedYear(getLatestYear(selectedSubject));
+      return;
+    }
+
+    if (paperId === "" || !availablePapers.find((paper) => paper.id === paperId)) {
+      setPaperId(availablePapers[0]?.id ?? "");
+    }
+  }, [availablePapers, availableYears, paperId, selectedSubject, selectedYear]);
 
   async function addSession(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -239,15 +274,66 @@ export function CalendarPlanner({
               <h2 className="text-xl font-semibold text-white">Add study session</h2>
               <div className="mt-4 grid gap-4">
                 <label className="space-y-2 text-sm text-slate-200">
+                  <span>Subject</span>
+                  <select
+                    value={selectedSubjectId}
+                    onChange={(event) => {
+                      const nextSubjectId = event.target.value;
+                      const nextSubject = subjects.find(
+                        (subject) => subject.id === nextSubjectId,
+                      );
+                      const nextYear = getLatestYear(nextSubject);
+                      const nextPaper =
+                        nextSubject?.papers.find(
+                          (paper) => `${paper.year}` === nextYear,
+                        )?.id ?? "";
+
+                      setSelectedSubjectId(nextSubjectId);
+                      setSelectedYear(nextYear);
+                      setPaperId(nextPaper);
+                    }}
+                    className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-3 py-2 text-white outline-none"
+                  >
+                    {subjects.map((subject) => (
+                      <option key={subject.id} value={subject.id}>
+                        {subject.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="space-y-2 text-sm text-slate-200">
+                  <span>Year</span>
+                  <select
+                    value={selectedYear}
+                    onChange={(event) => {
+                      const nextYear = event.target.value;
+                      const nextPaper =
+                        (selectedSubject?.papers ?? []).find(
+                          (paper) => `${paper.year}` === nextYear,
+                        )?.id ?? "";
+
+                      setSelectedYear(nextYear);
+                      setPaperId(nextPaper);
+                    }}
+                    className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-3 py-2 text-white outline-none"
+                  >
+                    {availableYears.map((year) => (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="space-y-2 text-sm text-slate-200">
                   <span>Paper</span>
                   <select
                     value={paperId}
                     onChange={(event) => setPaperId(event.target.value)}
                     className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-3 py-2 text-white outline-none"
                   >
-                    {papers.map((paperOption) => (
-                      <option key={paperOption.paperId} value={paperOption.paperId}>
-                        {paperOption.label}
+                    {availablePapers.map((paperOption) => (
+                      <option key={paperOption.id} value={paperOption.id}>
+                        {paperOption.paperCode} | {paperOption.assessmentComponent}
                       </option>
                     ))}
                   </select>
@@ -274,11 +360,14 @@ export function CalendarPlanner({
               </div>
               <div className="mt-4 flex items-center justify-between gap-3">
                 <p className="text-sm text-slate-400">
-                  {plannerMessage ?? "Add a paper to a date in the calendar."}
+                  {plannerMessage ??
+                    (paperId
+                      ? "Add a paper to a date in the calendar."
+                      : "Choose a subject, year, and paper to plan a session.")}
                 </p>
                 <button
                   type="submit"
-                  disabled={plannerStatus === "saving"}
+                  disabled={plannerStatus === "saving" || !paperId}
                   className="rounded-full bg-emerald-400 px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:bg-slate-600"
                 >
                   {plannerStatus === "saving" ? "Saving..." : "Add to calendar"}
