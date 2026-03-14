@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@azure/cosmos": "^4.9.1",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest"

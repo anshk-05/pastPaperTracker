@@ -1,3 +1,4 @@
+import "server-only";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import {
@@ -18,6 +19,11 @@ import {
   TrackerSnapshot,
   TrackerState,
 } from "@/lib/types";
+import {
+  isCosmosConfigured,
+  readTrackerStateFromCosmos,
+  writeTrackerStateToCosmos,
+} from "@/lib/db/cosmos";
 
 const trackerStatePath = path.join(process.cwd(), "data", "tracker-state.json");
 
@@ -49,7 +55,7 @@ async function ensureTrackerStateFile() {
   }
 }
 
-export async function readTrackerState(): Promise<TrackerState> {
+async function readTrackerStateFromFile(): Promise<TrackerState> {
   await ensureTrackerStateFile();
   const fileContents = await fs.readFile(trackerStatePath, "utf8");
 
@@ -66,9 +72,34 @@ export async function readTrackerState(): Promise<TrackerState> {
   }
 }
 
-async function writeTrackerState(state: TrackerState) {
+async function writeTrackerStateToFile(state: TrackerState) {
   await ensureTrackerStateFile();
   await fs.writeFile(trackerStatePath, JSON.stringify(state, null, 2), "utf8");
+}
+
+export async function readTrackerState(): Promise<TrackerState> {
+  if (isCosmosConfigured()) {
+    const cosmosState = await readTrackerStateFromCosmos();
+
+    if (cosmosState) {
+      return cosmosState;
+    }
+
+    const fallbackState = await readTrackerStateFromFile();
+    await writeTrackerStateToCosmos(fallbackState);
+    return fallbackState;
+  }
+
+  return readTrackerStateFromFile();
+}
+
+async function writeTrackerState(state: TrackerState) {
+  if (isCosmosConfigured()) {
+    await writeTrackerStateToCosmos(state);
+    return;
+  }
+
+  await writeTrackerStateToFile(state);
 }
 
 function normalisePerformance(values: PaperFormValues): PaperPerformance {
