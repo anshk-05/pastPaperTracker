@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PaperProgressForm } from "@/components/papers/paper-progress-form";
 import { Subject } from "@/lib/types";
 
 type SubjectPaperCatalogProps = {
@@ -47,6 +48,12 @@ export function SubjectPaperCatalog({
             className="inline-flex items-center rounded-full border border-slate-700 px-4 py-2 text-sm text-slate-200 transition hover:border-slate-500 hover:text-white"
           >
             Back to dashboard
+          </Link>
+          <Link
+            href="/manage-papers"
+            className="ml-3 inline-flex items-center rounded-full border border-cyan-600/50 px-4 py-2 text-sm text-cyan-100 transition hover:border-cyan-400 hover:text-white"
+          >
+            Manage papers
           </Link>
 
           <div className="mt-6 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -113,6 +120,9 @@ export function SubjectPaperCatalog({
                         <div className="flex flex-wrap items-center gap-3">
                           <span className="rounded-full bg-sky-500/15 px-3 py-1 text-sm font-medium text-sky-200">
                             {paper.seriesLabel}
+                          </span>
+                          <span className="rounded-full bg-slate-800 px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-300">
+                            {paper.source}
                           </span>
                           <span
                             className={`rounded-full px-3 py-1 text-sm font-medium ${buildStatusClass(
@@ -198,6 +208,8 @@ export function SubjectPaperCatalog({
                         </p>
                       </div>
                     ) : null}
+
+                    <PaperProgressForm paper={paper} />
                   </article>
                 ))}
               </div>

@@ -1,6 +1,10 @@
 import { DashboardOverview } from "@/components/dashboard/dashboard-overview";
-import { seedDatabase } from "@/lib/db/seed";
+import { loadDatabase } from "@/lib/db/storage";
 
-export default function HomePage() {
-  return <DashboardOverview database={seedDatabase} />;
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const database = await loadDatabase();
+
+  return <DashboardOverview database={database} />;
 }
