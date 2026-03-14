@@ -10,14 +10,18 @@ import {
 } from "@/lib/db/catalog";
 import {
   CreatePaperInput,
+  CreateStudySessionInput,
   CustomPaper,
   LocalDatabase,
   Paper,
   PaperFormValues,
   PaperPerformance,
   RemovedPaper,
+  StudySession,
+  StudySessionWithPaper,
   TrackerSnapshot,
   TrackerState,
+  UpdateStudySessionInput,
 } from "@/lib/types";
 import {
   isCosmosConfigured,
@@ -31,6 +35,7 @@ const defaultTrackerState: TrackerState = {
   progressByPaperId: {},
   removedPaperIds: [],
   customPapers: [],
+  studySessions: [],
 };
 
 function cloneDefaultState(): TrackerState {
@@ -38,6 +43,7 @@ function cloneDefaultState(): TrackerState {
     progressByPaperId: {},
     removedPaperIds: [],
     customPapers: [],
+    studySessions: [],
   };
 }
 
@@ -66,6 +72,7 @@ async function readTrackerStateFromFile(): Promise<TrackerState> {
       progressByPaperId: parsed.progressByPaperId ?? {},
       removedPaperIds: parsed.removedPaperIds ?? [],
       customPapers: parsed.customPapers ?? [],
+      studySessions: parsed.studySessions ?? [],
     };
   } catch {
     return cloneDefaultState();
@@ -86,6 +93,7 @@ async function readExistingTrackerStateFromFile() {
       progressByPaperId: parsed.progressByPaperId ?? {},
       removedPaperIds: parsed.removedPaperIds ?? [],
       customPapers: parsed.customPapers ?? [],
+      studySessions: parsed.studySessions ?? [],
     };
   } catch {
     return null;
@@ -202,15 +210,62 @@ function buildRemovedPapers(
   );
 }
 
+function findPaperById(database: LocalDatabase, paperId: string) {
+  for (const subject of database.subjects) {
+    const paper = subject.papers.find((item) => item.id === paperId);
+
+    if (paper) {
+      return {
+        paper,
+        subjectId: subject.id,
+        subjectName: subject.name,
+      };
+    }
+  }
+
+  return null;
+}
+
+function buildStudySessions(
+  database: LocalDatabase,
+  state: TrackerState,
+): StudySessionWithPaper[] {
+  return state.studySessions
+    .map((session) => {
+      const match = findPaperById(database, session.paperId);
+
+      if (!match) {
+        return null;
+      }
+
+      return {
+        ...session,
+        paper: match.paper,
+        subjectId: match.subjectId,
+        subjectName: match.subjectName,
+      };
+    })
+    .filter((session): session is StudySessionWithPaper => session !== null)
+    .sort((left, right) => {
+      if (left.date !== right.date) {
+        return left.date.localeCompare(right.date);
+      }
+
+      return left.paper.paperCode.localeCompare(right.paper.paperCode);
+    });
+}
+
 export async function loadTrackerSnapshot(): Promise<TrackerSnapshot> {
   const baseDatabase = buildBaseDatabase();
   const state = await readTrackerState();
+  const database = mergeDatabase(baseDatabase, state);
 
   return {
-    database: mergeDatabase(baseDatabase, state),
+    database,
     removedPapers: buildRemovedPapers(baseDatabase, state).sort((left, right) =>
       comparePaperOrder(left.paper, right.paper),
     ),
+    studySessions: buildStudySessions(database, state),
   };
 }
 
@@ -299,5 +354,48 @@ export async function removePaper(paperId: string) {
 export async function restorePaper(paperId: string) {
   const state = await readTrackerState();
   state.removedPaperIds = state.removedPaperIds.filter((id) => id !== paperId);
+  await writeTrackerState(state);
+}
+
+function buildStudySessionId() {
+  return `study-session-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function normaliseStudySessionDate(date: string) {
+  return date.slice(0, 10);
+}
+
+export async function addStudySession(values: CreateStudySessionInput) {
+  const state = await readTrackerState();
+  const session: StudySession = {
+    id: buildStudySessionId(),
+    paperId: values.paperId,
+    date: normaliseStudySessionDate(values.date),
+    notes: values.notes?.trim() || undefined,
+  };
+
+  state.studySessions.push(session);
+  await writeTrackerState(state);
+}
+
+export async function updateStudySession(
+  sessionId: string,
+  values: UpdateStudySessionInput,
+) {
+  const state = await readTrackerState();
+  const session = state.studySessions.find((item) => item.id === sessionId);
+
+  if (!session) {
+    throw new Error("Study session not found");
+  }
+
+  session.date = normaliseStudySessionDate(values.date);
+  session.notes = values.notes?.trim() || undefined;
+  await writeTrackerState(state);
+}
+
+export async function deleteStudySession(sessionId: string) {
+  const state = await readTrackerState();
+  state.studySessions = state.studySessions.filter((item) => item.id !== sessionId);
   await writeTrackerState(state);
 }
