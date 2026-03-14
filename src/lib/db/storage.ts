@@ -77,6 +77,21 @@ async function writeTrackerStateToFile(state: TrackerState) {
   await fs.writeFile(trackerStatePath, JSON.stringify(state, null, 2), "utf8");
 }
 
+async function readExistingTrackerStateFromFile() {
+  try {
+    const fileContents = await fs.readFile(trackerStatePath, "utf8");
+    const parsed = JSON.parse(fileContents) as Partial<TrackerState>;
+
+    return {
+      progressByPaperId: parsed.progressByPaperId ?? {},
+      removedPaperIds: parsed.removedPaperIds ?? [],
+      customPapers: parsed.customPapers ?? [],
+    };
+  } catch {
+    return null;
+  }
+}
+
 export async function readTrackerState(): Promise<TrackerState> {
   if (isCosmosConfigured()) {
     const cosmosState = await readTrackerStateFromCosmos();
@@ -85,9 +100,13 @@ export async function readTrackerState(): Promise<TrackerState> {
       return cosmosState;
     }
 
-    const fallbackState = await readTrackerStateFromFile();
-    await writeTrackerStateToCosmos(fallbackState);
-    return fallbackState;
+    const seedState =
+      process.env.NODE_ENV === "production"
+        ? cloneDefaultState()
+        : (await readExistingTrackerStateFromFile()) ?? cloneDefaultState();
+
+    await writeTrackerStateToCosmos(seedState);
+    return seedState;
   }
 
   return readTrackerStateFromFile();
