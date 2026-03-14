@@ -71,6 +71,12 @@ export function SubjectTracker({ subject }: SubjectTrackerProps) {
             >
               Manage papers
             </Link>
+            <Link
+              href="/calendar"
+              className="inline-flex items-center rounded-full border border-cyan-600/50 px-4 py-2 text-sm text-cyan-100 transition hover:border-cyan-400 hover:text-white"
+            >
+              Calendar
+            </Link>
             <LogoutButton />
             <a
               href="#paper-list"

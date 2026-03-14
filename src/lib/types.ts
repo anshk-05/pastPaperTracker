@@ -53,11 +53,13 @@ export interface TrackerState {
   progressByPaperId: Record<string, PaperPerformance>;
   removedPaperIds: string[];
   customPapers: CustomPaper[];
+  studySessions: StudySession[];
 }
 
 export interface TrackerSnapshot {
   database: LocalDatabase;
   removedPapers: RemovedPaper[];
+  studySessions: StudySessionWithPaper[];
 }
 
 export interface PaperFormValues {
@@ -75,6 +77,30 @@ export interface CreatePaperInput {
   series: string;
   paperCode: string;
   assessmentComponent: string;
+}
+
+export interface StudySession {
+  id: string;
+  paperId: string;
+  date: string;
+  notes?: string;
+}
+
+export interface StudySessionWithPaper extends StudySession {
+  paper: Paper;
+  subjectId: string;
+  subjectName: string;
+}
+
+export interface CreateStudySessionInput {
+  paperId: string;
+  date: string;
+  notes?: string;
+}
+
+export interface UpdateStudySessionInput {
+  date: string;
+  notes?: string;
 }
 
 export interface SubjectProgress {

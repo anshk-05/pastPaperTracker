@@ -35,6 +35,12 @@ export function PaperDetailView({ subject, paper }: PaperDetailViewProps) {
             >
               Manage papers
             </Link>
+            <Link
+              href="/calendar"
+              className="inline-flex items-center rounded-full border border-sky-600/50 px-4 py-2 text-sm text-sky-100 transition hover:border-sky-400 hover:text-white"
+            >
+              Calendar
+            </Link>
             <LogoutButton />
           </div>
 

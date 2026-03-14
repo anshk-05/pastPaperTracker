@@ -18,6 +18,12 @@ export default async function ManagePapersPage() {
           >
             Back to dashboard
           </Link>
+          <Link
+            href="/calendar"
+            className="ml-3 inline-flex items-center rounded-full border border-fuchsia-600/50 px-4 py-2 text-sm text-fuchsia-100 transition hover:border-fuchsia-400 hover:text-white"
+          >
+            Calendar
+          </Link>
           <div className="mt-3">
             <LogoutButton />
           </div>

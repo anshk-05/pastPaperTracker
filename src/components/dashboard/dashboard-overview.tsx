@@ -51,6 +51,12 @@ export function DashboardOverview({
               </p>
               <div className="flex flex-wrap gap-3 pt-2">
                 <Link
+                  href="/calendar"
+                  className="inline-flex items-center rounded-full border border-white/25 px-4 py-2 text-sm font-medium text-white transition hover:border-white/50 hover:bg-white/10"
+                >
+                  Calendar
+                </Link>
+                <Link
                   href="/manage-papers"
                   className="inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-slate-200"
                 >

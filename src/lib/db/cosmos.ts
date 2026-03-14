@@ -91,6 +91,7 @@ function buildDocument(state: TrackerState): TrackerStateDocument {
     progressByPaperId: state.progressByPaperId,
     removedPaperIds: state.removedPaperIds,
     customPapers: state.customPapers,
+    studySessions: state.studySessions,
   };
 }
 
@@ -111,6 +112,7 @@ export async function readTrackerStateFromCosmos() {
       progressByPaperId: response.resource.progressByPaperId ?? {},
       removedPaperIds: response.resource.removedPaperIds ?? [],
       customPapers: response.resource.customPapers ?? [],
+      studySessions: response.resource.studySessions ?? [],
     };
   } catch (error) {
     if (
