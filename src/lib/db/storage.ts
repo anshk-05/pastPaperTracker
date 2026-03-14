@@ -164,6 +164,22 @@ export async function getSubjectById(subjectId: string) {
   return database.subjects.find((subject) => subject.id === subjectId);
 }
 
+export async function getPaperById(subjectId: string, paperId: string) {
+  const subject = await getSubjectById(subjectId);
+
+  if (!subject) {
+    return null;
+  }
+
+  const paper = subject.papers.find((item) => item.id === paperId);
+
+  if (!paper) {
+    return null;
+  }
+
+  return { subject, paper };
+}
+
 export async function updatePaperPerformance(
   paperId: string,
   values: PaperFormValues,

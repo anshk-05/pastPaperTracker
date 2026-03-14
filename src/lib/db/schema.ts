@@ -1,4 +1,10 @@
-import { LocalDatabase, Paper, Subject, SubjectProgress } from "@/lib/types";
+import {
+  LocalDatabase,
+  Paper,
+  Subject,
+  SubjectProgress,
+  SubjectTrackerSummary,
+} from "@/lib/types";
 
 export type { LocalDatabase, Paper, Subject, SubjectProgress };
 
@@ -45,4 +51,42 @@ export function buildReviewTopicGroups(
       ),
     }))
     .filter((group) => group.topics.length > 0);
+}
+
+export function buildSubjectTrackerSummary(
+  subject: Subject,
+): SubjectTrackerSummary {
+  const completedPapers = subject.papers.filter(
+    (paper) => paper.performance.status === "Completed",
+  );
+  const percentages = completedPapers
+    .map((paper) => paper.performance.percentage)
+    .filter((value): value is number => value != null);
+  const reviewTopics = subject.papers.flatMap(
+    (paper) => paper.performance.topicsForImprovement,
+  );
+
+  return {
+    subjectId: subject.id,
+    subjectName: subject.name,
+    completedPapers: completedPapers.length,
+    pendingPapers: subject.papers.length - completedPapers.length,
+    totalPapers: subject.papers.length,
+    completionPercent:
+      subject.papers.length === 0
+        ? 0
+        : Math.round((completedPapers.length / subject.papers.length) * 100),
+    averagePercentage:
+      percentages.length > 0
+        ? Math.round(
+            percentages.reduce((sum, value) => sum + value, 0) /
+              percentages.length,
+          )
+        : undefined,
+    reviewItemCount: reviewTopics.length,
+    pendingPaperIds: subject.papers
+      .filter((paper) => paper.performance.status !== "Completed")
+      .map((paper) => paper.id),
+    reviewTopics,
+  };
 }

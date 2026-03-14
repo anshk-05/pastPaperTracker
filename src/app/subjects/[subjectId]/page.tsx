@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { SubjectPaperCatalog } from "@/components/subjects/subject-paper-catalog";
+import { SubjectTracker } from "@/components/tracker/subject-tracker";
 import { getSubjectById } from "@/lib/db/storage";
 
 type SubjectPageProps = {
@@ -18,5 +18,5 @@ export default async function SubjectPage({ params }: SubjectPageProps) {
     notFound();
   }
 
-  return <SubjectPaperCatalog subject={subject} />;
+  return <SubjectTracker subject={subject} />;
 }

@@ -89,3 +89,16 @@ export interface SubjectProgress {
   reviewItemCount: number;
   latestReviewTopics: string[];
 }
+
+export interface SubjectTrackerSummary {
+  subjectId: string;
+  subjectName: string;
+  completedPapers: number;
+  pendingPapers: number;
+  totalPapers: number;
+  completionPercent: number;
+  averagePercentage?: number;
+  reviewItemCount: number;
+  pendingPaperIds: string[];
+  reviewTopics: string[];
+}
