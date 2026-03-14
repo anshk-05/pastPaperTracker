@@ -34,6 +34,10 @@ function buildTopicCounts(papers: Paper[]) {
     .slice(0, 6);
 }
 
+function buildPaperLabel(paper: Paper) {
+  return `${paper.paperCode} | ${paper.assessmentComponent}`;
+}
+
 export function SubjectTracker({ subject }: SubjectTrackerProps) {
   const years = useMemo(
     () =>
@@ -99,6 +103,9 @@ export function SubjectTracker({ subject }: SubjectTrackerProps) {
     .sort((left, right) => right - left);
   const pendingPapers = filteredPapers.filter(
     (paper) => paper.performance.status !== "Completed",
+  );
+  const completedPapers = filteredPapers.filter(
+    (paper) => paper.performance.status === "Completed",
   );
   const topicCounts = buildTopicCounts(filteredPapers);
   const hasActiveFilters = selectedYear !== "all" || selectedPaperId !== "all";
@@ -235,7 +242,7 @@ export function SubjectTracker({ subject }: SubjectTrackerProps) {
                   <option value="all">All papers</option>
                   {paperOptions.map((paper) => (
                     <option key={paper.id} value={paper.id}>
-                      {paper.year} | {paper.paperCode} | {paper.assessmentComponent}
+                      {buildPaperLabel(paper)}
                     </option>
                   ))}
                 </select>
@@ -326,6 +333,195 @@ export function SubjectTracker({ subject }: SubjectTrackerProps) {
                 <p className="text-sm text-slate-400">
                   {filteredPapers.length > 0
                     ? "No review topics logged yet for this filtered view."
+                    : "No papers match the current filters."}
+                </p>
+              )}
+            </div>
+          </div>
+        </section>
+
+        <section className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-lg shadow-slate-950/30">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <h2 className="text-2xl font-semibold text-white">
+                  Completed papers
+                </h2>
+                <p className="mt-1 text-sm text-slate-400">
+                  Quick score and grade check for finished papers.
+                </p>
+              </div>
+              <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-sm text-emerald-200">
+                {completedPapers.length}
+              </span>
+            </div>
+
+            {completedPapers.length > 0 ? (
+              <>
+                <div className="mt-5 hidden overflow-x-auto md:block">
+                  <table className="min-w-full text-left text-sm">
+                    <thead className="text-slate-400">
+                      <tr className="border-b border-slate-800">
+                        <th className="px-3 py-3 font-medium">Paper</th>
+                        <th className="px-3 py-3 font-medium">Year</th>
+                        <th className="px-3 py-3 font-medium">Score</th>
+                        <th className="px-3 py-3 font-medium">%</th>
+                        <th className="px-3 py-3 font-medium">Grade</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {completedPapers.map((paper) => (
+                        <tr key={paper.id} className="border-b border-slate-800/80">
+                          <td className="px-3 py-3 text-white">
+                            <Link
+                              href={`/subjects/${subject.id}/papers/${paper.id}`}
+                              className="font-medium transition hover:text-cyan-300"
+                            >
+                              {paper.paperCode}
+                            </Link>
+                            <p className="mt-1 text-xs text-slate-400">
+                              {paper.assessmentComponent}
+                            </p>
+                          </td>
+                          <td className="px-3 py-3 text-slate-300">{paper.year}</td>
+                          <td className="px-3 py-3 text-slate-100">
+                            {paper.performance.score ?? "-"}
+                          </td>
+                          <td className="px-3 py-3 text-slate-100">
+                            {paper.performance.percentage != null
+                              ? `${paper.performance.percentage}%`
+                              : "-"}
+                          </td>
+                          <td className="px-3 py-3 text-slate-100">
+                            {paper.performance.grade ?? "-"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="mt-5 grid gap-3 md:hidden">
+                  {completedPapers.map((paper) => (
+                    <Link
+                      key={paper.id}
+                      href={`/subjects/${subject.id}/papers/${paper.id}`}
+                      className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 transition hover:border-cyan-500/60"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="text-base font-semibold text-white">
+                            {paper.paperCode}
+                          </p>
+                          <p className="mt-1 text-xs text-slate-400">
+                            {paper.year} | {paper.assessmentComponent}
+                          </p>
+                        </div>
+                        <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-xs text-emerald-200">
+                          Done
+                        </span>
+                      </div>
+
+                      <dl className="mt-4 grid grid-cols-3 gap-2">
+                        <div className="rounded-2xl bg-slate-900 px-3 py-2">
+                          <dt className="text-[11px] uppercase tracking-[0.16em] text-slate-500">
+                            Score
+                          </dt>
+                          <dd className="mt-1 text-sm font-semibold text-white">
+                            {paper.performance.score ?? "-"}
+                          </dd>
+                        </div>
+                        <div className="rounded-2xl bg-slate-900 px-3 py-2">
+                          <dt className="text-[11px] uppercase tracking-[0.16em] text-slate-500">
+                            %
+                          </dt>
+                          <dd className="mt-1 text-sm font-semibold text-white">
+                            {paper.performance.percentage != null
+                              ? `${paper.performance.percentage}%`
+                              : "-"}
+                          </dd>
+                        </div>
+                        <div className="rounded-2xl bg-slate-900 px-3 py-2">
+                          <dt className="text-[11px] uppercase tracking-[0.16em] text-slate-500">
+                            Grade
+                          </dt>
+                          <dd className="mt-1 text-sm font-semibold text-white">
+                            {paper.performance.grade ?? "-"}
+                          </dd>
+                        </div>
+                      </dl>
+                    </Link>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <p className="mt-5 text-sm text-slate-400">
+                {filteredPapers.length > 0
+                  ? "No completed papers in this filtered view yet."
+                  : "No papers match the current filters."}
+              </p>
+            )}
+          </div>
+
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-lg shadow-slate-950/30">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <h2 className="text-2xl font-semibold text-white">
+                  Still to do
+                </h2>
+                <p className="mt-1 text-sm text-slate-400">
+                  Fast checklist of papers that still need logging.
+                </p>
+              </div>
+              <span className="rounded-full bg-amber-500/15 px-3 py-1 text-sm text-amber-200">
+                {pendingPapers.length}
+              </span>
+            </div>
+
+            <div className="mt-5 grid gap-3">
+              {pendingPapers.length > 0 ? (
+                pendingPapers.map((paper) => (
+                  <div
+                    key={paper.id}
+                    className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="text-base font-semibold text-white">
+                          {paper.paperCode}
+                        </p>
+                        <p className="mt-1 text-xs text-slate-400">
+                          {paper.year} | {paper.assessmentComponent}
+                        </p>
+                      </div>
+                      <span className="rounded-full bg-amber-500/15 px-2 py-1 text-xs text-amber-200">
+                        {paper.performance.status}
+                      </span>
+                    </div>
+
+                    <div className="mt-4 flex items-center justify-between gap-3">
+                      <p className="text-sm text-slate-400">
+                        {paper.performance.topicsForImprovement.length > 0
+                          ? `${paper.performance.topicsForImprovement.length} review topic${
+                              paper.performance.topicsForImprovement.length === 1
+                                ? ""
+                                : "s"
+                            } saved`
+                          : "No score or review notes saved yet"}
+                      </p>
+                      <Link
+                        href={`/subjects/${subject.id}/papers/${paper.id}`}
+                        className="inline-flex items-center rounded-full bg-cyan-400 px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-cyan-300"
+                      >
+                        Open
+                      </Link>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-slate-400">
+                  {filteredPapers.length > 0
+                    ? "Everything in this filtered view is completed."
                     : "No papers match the current filters."}
                 </p>
               )}
