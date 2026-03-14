@@ -101,9 +101,6 @@ export function SubjectTracker({ subject }: SubjectTrackerProps) {
   const filteredYears = Object.keys(papersByYear)
     .map(Number)
     .sort((left, right) => right - left);
-  const pendingPapers = filteredPapers.filter(
-    (paper) => paper.performance.status !== "Completed",
-  );
   const completedPapers = filteredPapers.filter(
     (paper) => paper.performance.status === "Completed",
   );
@@ -251,96 +248,7 @@ export function SubjectTracker({ subject }: SubjectTrackerProps) {
           </div>
         </section>
 
-        <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-          <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-lg shadow-slate-950/30">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <h2 className="text-2xl font-semibold text-white">
-                  Ready to log next
-                </h2>
-                <p className="mt-1 text-sm text-slate-400">
-                  Jump straight into papers that still need a score.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5 grid gap-3">
-              {pendingPapers.length > 0 ? (
-                pendingPapers.slice(0, 6).map((paper) => (
-                  <div
-                    key={paper.id}
-                    className="flex flex-col gap-3 rounded-2xl border border-slate-800 bg-slate-950/60 p-4 md:flex-row md:items-center md:justify-between"
-                  >
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-300">
-                          {paper.seriesLabel}
-                        </span>
-                        <span
-                          className={`rounded-full px-3 py-1 text-sm font-medium ${buildStatusClass(
-                            paper.performance.status,
-                          )}`}
-                        >
-                          {paper.performance.status}
-                        </span>
-                      </div>
-                      <p className="mt-3 text-lg font-semibold text-white">
-                        {paper.paperCode}
-                      </p>
-                      <p className="text-sm text-slate-300">
-                        {paper.assessmentComponent}
-                      </p>
-                    </div>
-
-                    <Link
-                      href={`/subjects/${subject.id}/papers/${paper.id}`}
-                      className="inline-flex items-center rounded-full bg-cyan-400 px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-cyan-300"
-                    >
-                      Log this paper
-                    </Link>
-                  </div>
-                ))
-              ) : (
-                <p className="text-sm text-slate-400">
-                  {filteredPapers.length > 0
-                    ? "Every paper in this filtered view is marked completed."
-                    : "No papers match the current filters."}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-lg shadow-slate-950/30">
-            <h2 className="text-2xl font-semibold text-white">Review hotspots</h2>
-            <p className="mt-1 text-sm text-slate-400">
-              Topics that are showing up most often in your notes.
-            </p>
-
-            <div className="mt-5 grid gap-3">
-              {topicCounts.length > 0 ? (
-                topicCounts.map(([topic, count]) => (
-                  <div
-                    key={topic}
-                    className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-950/60 px-4 py-3"
-                  >
-                    <p className="text-sm text-slate-100">{topic}</p>
-                    <span className="rounded-full bg-cyan-500/15 px-3 py-1 text-sm text-cyan-200">
-                      {count}
-                    </span>
-                  </div>
-                ))
-              ) : (
-                <p className="text-sm text-slate-400">
-                  {filteredPapers.length > 0
-                    ? "No review topics logged yet for this filtered view."
-                    : "No papers match the current filters."}
-                </p>
-              )}
-            </div>
-          </div>
-        </section>
-
-        <section className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+        <section className="grid gap-6">
           <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-lg shadow-slate-950/30">
             <div className="flex items-center justify-between gap-3">
               <div>
@@ -462,70 +370,43 @@ export function SubjectTracker({ subject }: SubjectTrackerProps) {
               </p>
             )}
           </div>
+        </section>
 
-          <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-lg shadow-slate-950/30">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <h2 className="text-2xl font-semibold text-white">
-                  Still to do
-                </h2>
-                <p className="mt-1 text-sm text-slate-400">
-                  Fast checklist of papers that still need logging.
-                </p>
-              </div>
-              <span className="rounded-full bg-amber-500/15 px-3 py-1 text-sm text-amber-200">
-                {pendingPapers.length}
+        <section className="rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-lg shadow-slate-950/20">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-xl font-semibold text-white">Review hotspots</h2>
+              <p className="mt-1 text-sm text-slate-400">
+                Most common weak spots from your saved notes.
+              </p>
+            </div>
+            {topicCounts.length > 0 ? (
+              <span className="rounded-full bg-cyan-500/15 px-3 py-1 text-sm text-cyan-200">
+                Top {topicCounts.length}
               </span>
-            </div>
+            ) : null}
+          </div>
 
-            <div className="mt-5 grid gap-3">
-              {pendingPapers.length > 0 ? (
-                pendingPapers.map((paper) => (
-                  <div
-                    key={paper.id}
-                    className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <p className="text-base font-semibold text-white">
-                          {paper.paperCode}
-                        </p>
-                        <p className="mt-1 text-xs text-slate-400">
-                          {paper.year} | {paper.assessmentComponent}
-                        </p>
-                      </div>
-                      <span className="rounded-full bg-amber-500/15 px-2 py-1 text-xs text-amber-200">
-                        {paper.performance.status}
-                      </span>
-                    </div>
-
-                    <div className="mt-4 flex items-center justify-between gap-3">
-                      <p className="text-sm text-slate-400">
-                        {paper.performance.topicsForImprovement.length > 0
-                          ? `${paper.performance.topicsForImprovement.length} review topic${
-                              paper.performance.topicsForImprovement.length === 1
-                                ? ""
-                                : "s"
-                            } saved`
-                          : "No score or review notes saved yet"}
-                      </p>
-                      <Link
-                        href={`/subjects/${subject.id}/papers/${paper.id}`}
-                        className="inline-flex items-center rounded-full bg-cyan-400 px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-cyan-300"
-                      >
-                        Open
-                      </Link>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-sm text-slate-400">
-                  {filteredPapers.length > 0
-                    ? "Everything in this filtered view is completed."
-                    : "No papers match the current filters."}
-                </p>
-              )}
-            </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {topicCounts.length > 0 ? (
+              topicCounts.map(([topic, count]) => (
+                <div
+                  key={topic}
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-950/70 px-3 py-2"
+                >
+                  <span className="text-sm text-slate-100">{topic}</span>
+                  <span className="rounded-full bg-cyan-500/15 px-2 py-0.5 text-xs text-cyan-200">
+                    {count}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-slate-400">
+                {filteredPapers.length > 0
+                  ? "No review topics logged yet for this filtered view."
+                  : "No papers match the current filters."}
+              </p>
+            )}
           </div>
         </section>
 
