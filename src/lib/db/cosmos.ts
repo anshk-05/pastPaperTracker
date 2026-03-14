@@ -55,7 +55,10 @@ async function createContainer() {
 
 async function getContainer() {
   if (!cachedContainerPromise) {
-    cachedContainerPromise = createContainer();
+    cachedContainerPromise = createContainer().catch((error) => {
+      cachedContainerPromise = null;
+      throw error;
+    });
   }
 
   return cachedContainerPromise;

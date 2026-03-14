@@ -1,5 +1,16 @@
 {
-  "progressByPaperId": {},
+  "progressByPaperId": {
+    "chemistry-2018-june-1ch0-1h-1": {
+      "status": "Completed",
+      "score": 76,
+      "percentage": 76,
+      "grade": "8",
+      "topicsForImprovement": [
+        "Fullerenes"
+      ],
+      "updatedAt": "2026-03-14"
+    }
+  },
   "removedPaperIds": [],
   "customPapers": []
 }

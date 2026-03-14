@@ -94,19 +94,29 @@ async function readExistingTrackerStateFromFile() {
 
 export async function readTrackerState(): Promise<TrackerState> {
   if (isCosmosConfigured()) {
-    const cosmosState = await readTrackerStateFromCosmos();
+    try {
+      const cosmosState = await readTrackerStateFromCosmos();
 
-    if (cosmosState) {
-      return cosmosState;
+      if (cosmosState) {
+        return cosmosState;
+      }
+
+      const seedState =
+        process.env.NODE_ENV === "production"
+          ? cloneDefaultState()
+          : (await readExistingTrackerStateFromFile()) ?? cloneDefaultState();
+
+      await writeTrackerStateToCosmos(seedState);
+      return seedState;
+    } catch (error) {
+      console.error("Failed to read tracker state from Cosmos DB.", error);
+
+      if (process.env.NODE_ENV === "production") {
+        return cloneDefaultState();
+      }
+
+      return readTrackerStateFromFile();
     }
-
-    const seedState =
-      process.env.NODE_ENV === "production"
-        ? cloneDefaultState()
-        : (await readExistingTrackerStateFromFile()) ?? cloneDefaultState();
-
-    await writeTrackerStateToCosmos(seedState);
-    return seedState;
   }
 
   return readTrackerStateFromFile();
