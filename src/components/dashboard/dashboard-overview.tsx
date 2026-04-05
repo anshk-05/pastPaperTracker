@@ -42,7 +42,8 @@ export function DashboardOverview({
                 GCSE Past Paper Tracker
               </p>
               <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                {studentName}'s Summer 2026 revision tracker
+                {studentName}
+                {"'s"} Summer 2026 revision tracker
               </h1>
               <p className="text-sm leading-6 text-slate-300 sm:text-base">
                 A mobile-friendly dashboard for seeing which papers are done,

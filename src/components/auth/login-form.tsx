@@ -16,26 +16,30 @@ export function LoginForm() {
     setIsSaving(true);
     setMessage(null);
 
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-    setIsSaving(false);
+      if (!response.ok) {
+        setMessage("Login failed. Please check the username and password.");
+        return;
+      }
 
-    if (!response.ok) {
-      setMessage("Login failed. Please check the username and password.");
-      return;
+      const nextPathParam = searchParams.get("next");
+      const nextPath =
+        nextPathParam && nextPathParam.startsWith("/") ? nextPathParam : "/";
+      router.push(nextPath);
+      router.refresh();
+    } catch {
+      setMessage("Could not reach the tracker. Check the connection and try again.");
+    } finally {
+      setIsSaving(false);
     }
-
-    const nextPathParam = searchParams.get("next");
-    const nextPath =
-      nextPathParam && nextPathParam.startsWith("/") ? nextPathParam : "/";
-    router.push(nextPath);
-    router.refresh();
   }
 
   return (

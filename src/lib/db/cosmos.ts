@@ -8,6 +8,12 @@ type TrackerStateDocument = TrackerState & {
   userId: string;
   type: "trackerState";
   updatedAt: string;
+  _etag?: string;
+};
+
+export type TrackerStateRecord = {
+  state: TrackerState;
+  etag: string;
 };
 
 type CosmosSettings = {
@@ -95,7 +101,39 @@ function buildDocument(state: TrackerState): TrackerStateDocument {
   };
 }
 
-export async function readTrackerStateFromCosmos() {
+function normaliseTrackerState(
+  state: Partial<TrackerState> | null | undefined,
+): TrackerState {
+  return {
+    progressByPaperId: state?.progressByPaperId ?? {},
+    removedPaperIds: state?.removedPaperIds ?? [],
+    customPapers: state?.customPapers ?? [],
+    studySessions: state?.studySessions ?? [],
+  };
+}
+
+function getErrorStatusCode(error: unknown) {
+  if (typeof error !== "object" || error === null) {
+    return null;
+  }
+
+  if ("statusCode" in error && typeof error.statusCode === "number") {
+    return error.statusCode;
+  }
+
+  if ("code" in error && typeof error.code === "number") {
+    return error.code;
+  }
+
+  return null;
+}
+
+export function isCosmosConcurrencyError(error: unknown) {
+  const statusCode = getErrorStatusCode(error);
+  return statusCode === 409 || statusCode === 412;
+}
+
+export async function readTrackerStateRecordFromCosmos(): Promise<TrackerStateRecord | null> {
   const container = await getContainer();
   const userId = getTrackerUserId();
 
@@ -109,23 +147,41 @@ export async function readTrackerStateFromCosmos() {
     }
 
     return {
-      progressByPaperId: response.resource.progressByPaperId ?? {},
-      removedPaperIds: response.resource.removedPaperIds ?? [],
-      customPapers: response.resource.customPapers ?? [],
-      studySessions: response.resource.studySessions ?? [],
+      state: normaliseTrackerState(response.resource),
+      etag: response.resource._etag,
     };
   } catch (error) {
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "code" in error &&
-      error.code === 404
-    ) {
+    if (getErrorStatusCode(error) === 404) {
       return null;
     }
 
     throw error;
   }
+}
+
+export async function readTrackerStateFromCosmos() {
+  const record = await readTrackerStateRecordFromCosmos();
+  return record?.state ?? null;
+}
+
+export async function createTrackerStateInCosmos(state: TrackerState) {
+  const container = await getContainer();
+  await container.items.create(buildDocument(state));
+}
+
+export async function replaceTrackerStateInCosmos(
+  state: TrackerState,
+  etag: string,
+) {
+  const container = await getContainer();
+  const userId = getTrackerUserId();
+
+  await container.item(trackerDocumentId, userId).replace(buildDocument(state), {
+    accessCondition: {
+      type: "IfMatch",
+      condition: etag,
+    },
+  });
 }
 
 export async function writeTrackerStateToCosmos(state: TrackerState) {

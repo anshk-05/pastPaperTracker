@@ -20,6 +20,7 @@ export function PaperManagementConsole({
   const [paperCode, setPaperCode] = useState("");
   const [assessmentComponent, setAssessmentComponent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [activePaperId, setActivePaperId] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
   async function addPaper(event: React.FormEvent<HTMLFormElement>) {
@@ -27,57 +28,92 @@ export function PaperManagementConsole({
     setIsSaving(true);
     setMessage(null);
 
-    const response = await fetch("/api/papers", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        subjectId,
-        year: Number(year),
-        series,
-        paperCode,
-        assessmentComponent,
-      }),
-    });
+    try {
+      const response = await fetch("/api/papers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          subjectId,
+          year: Number(year),
+          series,
+          paperCode,
+          assessmentComponent,
+        }),
+      });
 
-    setIsSaving(false);
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        setMessage(payload?.error ?? "Could not add paper.");
+        return;
+      }
 
-    if (!response.ok) {
-      setMessage("Could not add paper.");
-      return;
+      setPaperCode("");
+      setAssessmentComponent("");
+      setMessage("Paper added");
+      router.refresh();
+    } catch {
+      setMessage("Could not add paper right now. Check the connection and try again.");
+    } finally {
+      setIsSaving(false);
     }
-
-    setPaperCode("");
-    setAssessmentComponent("");
-    setMessage("Paper added");
-    router.refresh();
   }
 
   async function removePaper(paperId: string) {
-    const response = await fetch(`/api/papers/${paperId}`, {
-      method: "DELETE",
-    });
+    setActivePaperId(paperId);
+    setMessage(null);
 
-    if (!response.ok) {
-      setMessage("Could not remove paper.");
-      return;
+    try {
+      const response = await fetch(`/api/papers/${paperId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        setMessage(payload?.error ?? "Could not remove paper.");
+        return;
+      }
+
+      router.refresh();
+    } catch {
+      setMessage(
+        "Could not remove paper right now. Check the connection and try again.",
+      );
+    } finally {
+      setActivePaperId(null);
     }
-
-    router.refresh();
   }
 
   async function restorePaper(paperId: string) {
-    const response = await fetch(`/api/papers/${paperId}/restore`, {
-      method: "POST",
-    });
+    setActivePaperId(paperId);
+    setMessage(null);
 
-    if (!response.ok) {
-      setMessage("Could not restore paper.");
-      return;
+    try {
+      const response = await fetch(`/api/papers/${paperId}/restore`, {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        setMessage(payload?.error ?? "Could not restore paper.");
+        return;
+      }
+
+      router.refresh();
+    } catch {
+      setMessage(
+        "Could not restore paper right now. Check the connection and try again.",
+      );
+    } finally {
+      setActivePaperId(null);
     }
-
-    router.refresh();
   }
 
   return (
@@ -201,9 +237,10 @@ export function PaperManagementConsole({
                   <button
                     type="button"
                     onClick={() => removePaper(paper.id)}
+                    disabled={activePaperId === paper.id}
                     className="rounded-full border border-rose-500/40 px-4 py-2 text-sm font-medium text-rose-200 transition hover:border-rose-400 hover:text-white"
                   >
-                    Remove from tracker
+                    {activePaperId === paper.id ? "Removing..." : "Remove from tracker"}
                   </button>
                 </div>
               ))}
@@ -236,9 +273,10 @@ export function PaperManagementConsole({
                 <button
                   type="button"
                   onClick={() => restorePaper(paper.id)}
+                  disabled={activePaperId === paper.id}
                   className="rounded-full bg-emerald-500/20 px-4 py-2 text-sm font-medium text-emerald-200 transition hover:bg-emerald-500/30"
                 >
-                  Restore paper
+                  {activePaperId === paper.id ? "Restoring..." : "Restore paper"}
                 </button>
               </div>
             ))

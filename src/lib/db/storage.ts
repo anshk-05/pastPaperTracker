@@ -25,8 +25,12 @@ import {
   UpdateStudySessionInput,
 } from "@/lib/types";
 import {
+  createTrackerStateInCosmos,
+  isCosmosConcurrencyError,
   isCosmosConfigured,
+  readTrackerStateRecordFromCosmos,
   readTrackerStateFromCosmos,
+  replaceTrackerStateInCosmos,
   writeTrackerStateToCosmos,
 } from "@/lib/db/cosmos";
 
@@ -121,7 +125,9 @@ export async function readTrackerState(): Promise<TrackerState> {
       console.error("Failed to read tracker state from Cosmos DB.", error);
 
       if (process.env.NODE_ENV === "production") {
-        return cloneDefaultState();
+        throw new Error(
+          "Tracker data is temporarily unavailable. Saved data was not changed.",
+        );
       }
 
       return readTrackerStateFromFile();
@@ -131,13 +137,54 @@ export async function readTrackerState(): Promise<TrackerState> {
   return readTrackerStateFromFile();
 }
 
-async function writeTrackerState(state: TrackerState) {
-  if (isCosmosConfigured()) {
-    await writeTrackerStateToCosmos(state);
+async function buildInitialCosmosState() {
+  if (process.env.NODE_ENV === "production") {
+    return cloneDefaultState();
+  }
+
+  return (await readExistingTrackerStateFromFile()) ?? cloneDefaultState();
+}
+
+async function mutateTrackerState(update: (state: TrackerState) => void) {
+  if (!isCosmosConfigured()) {
+    const state = await readTrackerStateFromFile();
+    update(state);
+    await writeTrackerStateToFile(state);
     return;
   }
 
-  await writeTrackerStateToFile(state);
+  let lastError: unknown = null;
+
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    try {
+      const record = await readTrackerStateRecordFromCosmos();
+      const state = record ? record.state : await buildInitialCosmosState();
+      update(state);
+
+      if (record) {
+        await replaceTrackerStateInCosmos(state, record.etag);
+      } else {
+        await createTrackerStateInCosmos(state);
+      }
+
+      return;
+    } catch (error) {
+      if (isCosmosConcurrencyError(error)) {
+        lastError = error;
+        continue;
+      }
+
+      console.error("Failed to write tracker state to Cosmos DB.", error);
+      throw new Error(
+        "Tracker data is temporarily unavailable. No changes were saved.",
+      );
+    }
+  }
+
+  console.error("Tracker state update hit repeated Cosmos write conflicts.", lastError);
+  throw new Error(
+    "Another tab changed the tracker at the same time. Refresh and try again.",
+  );
 }
 
 function resolvePaperStatus(
@@ -329,13 +376,12 @@ export async function updatePaperPerformance(
   paperId: string,
   values: PaperFormValues,
 ) {
-  const state = await readTrackerState();
-  state.progressByPaperId[paperId] = normalisePerformance(values);
-  await writeTrackerState(state);
+  await mutateTrackerState((state) => {
+    state.progressByPaperId[paperId] = normalisePerformance(values);
+  });
 }
 
 export async function addCustomPaper(values: CreatePaperInput) {
-  const state = await readTrackerState();
   const subject = getSubjectConfig(values.subjectId);
 
   if (!subject) {
@@ -363,28 +409,30 @@ export async function addCustomPaper(values: CreatePaperInput) {
     },
   };
 
-  state.customPapers.push(paper);
-  await writeTrackerState(state);
+  await mutateTrackerState((state) => {
+    state.customPapers.push(paper);
+  });
 }
 
 export async function removePaper(paperId: string) {
-  const state = await readTrackerState();
-  const customPaperIndex = state.customPapers.findIndex((paper) => paper.id === paperId);
+  await mutateTrackerState((state) => {
+    const customPaperIndex = state.customPapers.findIndex(
+      (paper) => paper.id === paperId,
+    );
 
-  if (customPaperIndex >= 0) {
-    state.customPapers.splice(customPaperIndex, 1);
-    delete state.progressByPaperId[paperId];
-  } else if (!state.removedPaperIds.includes(paperId)) {
-    state.removedPaperIds.push(paperId);
-  }
-
-  await writeTrackerState(state);
+    if (customPaperIndex >= 0) {
+      state.customPapers.splice(customPaperIndex, 1);
+      delete state.progressByPaperId[paperId];
+    } else if (!state.removedPaperIds.includes(paperId)) {
+      state.removedPaperIds.push(paperId);
+    }
+  });
 }
 
 export async function restorePaper(paperId: string) {
-  const state = await readTrackerState();
-  state.removedPaperIds = state.removedPaperIds.filter((id) => id !== paperId);
-  await writeTrackerState(state);
+  await mutateTrackerState((state) => {
+    state.removedPaperIds = state.removedPaperIds.filter((id) => id !== paperId);
+  });
 }
 
 function buildStudySessionId() {
@@ -396,7 +444,6 @@ function normaliseStudySessionDate(date: string) {
 }
 
 export async function addStudySession(values: CreateStudySessionInput) {
-  const state = await readTrackerState();
   const session: StudySession = {
     id: buildStudySessionId(),
     paperId: values.paperId,
@@ -404,28 +451,29 @@ export async function addStudySession(values: CreateStudySessionInput) {
     notes: values.notes?.trim() || undefined,
   };
 
-  state.studySessions.push(session);
-  await writeTrackerState(state);
+  await mutateTrackerState((state) => {
+    state.studySessions.push(session);
+  });
 }
 
 export async function updateStudySession(
   sessionId: string,
   values: UpdateStudySessionInput,
 ) {
-  const state = await readTrackerState();
-  const session = state.studySessions.find((item) => item.id === sessionId);
+  await mutateTrackerState((state) => {
+    const session = state.studySessions.find((item) => item.id === sessionId);
 
-  if (!session) {
-    throw new Error("Study session not found");
-  }
+    if (!session) {
+      throw new Error("Study session not found");
+    }
 
-  session.date = normaliseStudySessionDate(values.date);
-  session.notes = values.notes?.trim() || undefined;
-  await writeTrackerState(state);
+    session.date = normaliseStudySessionDate(values.date);
+    session.notes = values.notes?.trim() || undefined;
+  });
 }
 
 export async function deleteStudySession(sessionId: string) {
-  const state = await readTrackerState();
-  state.studySessions = state.studySessions.filter((item) => item.id !== sessionId);
-  await writeTrackerState(state);
+  await mutateTrackerState((state) => {
+    state.studySessions = state.studySessions.filter((item) => item.id !== sessionId);
+  });
 }

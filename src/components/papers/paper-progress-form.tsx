@@ -41,36 +41,40 @@ export function PaperProgressForm({ paper }: PaperProgressFormProps) {
     setIsSaving(true);
     setMessage(null);
 
-    const response = await fetch(`/api/papers/${paper.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        status,
-        score: score === "" ? undefined : Number(score),
-        percentage: percentage === "" ? undefined : Number(percentage),
-        grade,
-        topicsForImprovement: topics
-          .split("\n")
-          .map((item) => item.trim())
-          .filter(Boolean),
-        notes,
-      }),
-    });
+    try {
+      const response = await fetch(`/api/papers/${paper.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status,
+          score: score === "" ? undefined : Number(score),
+          percentage: percentage === "" ? undefined : Number(percentage),
+          grade,
+          topicsForImprovement: topics
+            .split("\n")
+            .map((item) => item.trim())
+            .filter(Boolean),
+          notes,
+        }),
+      });
 
-    setIsSaving(false);
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        setMessage(payload?.error ?? "Save failed. Please try again.");
+        return;
+      }
 
-    if (!response.ok) {
-      const payload = (await response.json().catch(() => null)) as
-        | { error?: string }
-        | null;
-      setMessage(payload?.error ?? "Save failed. Please try again.");
-      return;
+      setMessage("Saved");
+      router.refresh();
+    } catch {
+      setMessage("Could not save right now. Check the connection and try again.");
+    } finally {
+      setIsSaving(false);
     }
-
-    setMessage("Saved");
-    router.refresh();
   }
 
   return (

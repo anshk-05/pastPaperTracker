@@ -154,31 +154,37 @@ export function CalendarPlanner({
     setPlannerStatus("saving");
     setPlannerMessage(null);
 
-    const response = await fetch("/api/calendar-sessions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        paperId,
-        date,
-        notes,
-      }),
-    });
+    try {
+      const response = await fetch("/api/calendar-sessions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          paperId,
+          date,
+          notes,
+        }),
+      });
 
-    setPlannerStatus("idle");
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        setPlannerMessage(payload?.error ?? "Could not add study session.");
+        return;
+      }
 
-    if (!response.ok) {
-      const payload = (await response.json().catch(() => null)) as
-        | { error?: string }
-        | null;
-      setPlannerMessage(payload?.error ?? "Could not add study session.");
-      return;
+      setNotes("");
+      setPlannerMessage("Session added");
+      router.refresh();
+    } catch {
+      setPlannerMessage(
+        "Could not add the study session right now. Check the connection and try again.",
+      );
+    } finally {
+      setPlannerStatus("idle");
     }
-
-    setNotes("");
-    setPlannerMessage("Session added");
-    router.refresh();
   }
 
   async function updateSession(
@@ -186,52 +192,68 @@ export function CalendarPlanner({
     nextDate: string,
     nextNotes: string,
   ) {
-    const response = await fetch(`/api/calendar-sessions/${sessionId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        date: nextDate,
-        notes: nextNotes,
-      }),
-    });
+    try {
+      const response = await fetch(`/api/calendar-sessions/${sessionId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          date: nextDate,
+          notes: nextNotes,
+        }),
+      });
 
-    if (!response.ok) {
-      const payload = (await response.json().catch(() => null)) as
-        | { error?: string }
-        | null;
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        setSessionMessages((current) => ({
+          ...current,
+          [sessionId]: payload?.error ?? "Could not update session.",
+        }));
+        return;
+      }
+
       setSessionMessages((current) => ({
         ...current,
-        [sessionId]: payload?.error ?? "Could not update session.",
+        [sessionId]: "Saved",
       }));
-      return;
+      router.refresh();
+    } catch {
+      setSessionMessages((current) => ({
+        ...current,
+        [sessionId]:
+          "Could not update the session right now. Check the connection and try again.",
+      }));
     }
-
-    setSessionMessages((current) => ({
-      ...current,
-      [sessionId]: "Saved",
-    }));
-    router.refresh();
   }
 
   async function deleteSession(sessionId: string) {
-    const response = await fetch(`/api/calendar-sessions/${sessionId}`, {
-      method: "DELETE",
-    });
+    try {
+      const response = await fetch(`/api/calendar-sessions/${sessionId}`, {
+        method: "DELETE",
+      });
 
-    if (!response.ok) {
-      const payload = (await response.json().catch(() => null)) as
-        | { error?: string }
-        | null;
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        setSessionMessages((current) => ({
+          ...current,
+          [sessionId]: payload?.error ?? "Could not delete session.",
+        }));
+        return;
+      }
+
+      router.refresh();
+    } catch {
       setSessionMessages((current) => ({
         ...current,
-        [sessionId]: payload?.error ?? "Could not delete session.",
+        [sessionId]:
+          "Could not delete the session right now. Check the connection and try again.",
       }));
-      return;
     }
-
-    router.refresh();
   }
 
   return (

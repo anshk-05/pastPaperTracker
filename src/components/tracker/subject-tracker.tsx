@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { buildSubjectTrackerSummary } from "@/lib/db/schema";
 import { Paper, Subject } from "@/lib/types";
@@ -56,15 +56,11 @@ export function SubjectTracker({ subject }: SubjectTrackerProps) {
       ),
     [selectedYear, subject.papers],
   );
-
-  useEffect(() => {
-    if (
-      selectedPaperId !== "all" &&
-      !paperOptions.some((paper) => paper.id === selectedPaperId)
-    ) {
-      setSelectedPaperId("all");
-    }
-  }, [paperOptions, selectedPaperId]);
+  const activeSelectedPaperId =
+    selectedPaperId !== "all" &&
+    !paperOptions.some((paper) => paper.id === selectedPaperId)
+      ? "all"
+      : selectedPaperId;
 
   const filteredPapers = useMemo(
     () =>
@@ -72,11 +68,11 @@ export function SubjectTracker({ subject }: SubjectTrackerProps) {
         const matchesYear =
           selectedYear === "all" || `${paper.year}` === selectedYear;
         const matchesPaper =
-          selectedPaperId === "all" || paper.id === selectedPaperId;
+          activeSelectedPaperId === "all" || paper.id === activeSelectedPaperId;
 
         return matchesYear && matchesPaper;
       }),
-    [selectedPaperId, selectedYear, subject.papers],
+    [activeSelectedPaperId, selectedYear, subject.papers],
   );
 
   const filteredSubject = useMemo(
@@ -105,7 +101,8 @@ export function SubjectTracker({ subject }: SubjectTrackerProps) {
     (paper) => paper.performance.status === "Completed",
   );
   const topicCounts = buildTopicCounts(filteredPapers);
-  const hasActiveFilters = selectedYear !== "all" || selectedPaperId !== "all";
+  const hasActiveFilters =
+    selectedYear !== "all" || activeSelectedPaperId !== "all";
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-50">
@@ -232,7 +229,7 @@ export function SubjectTracker({ subject }: SubjectTrackerProps) {
               <label className="space-y-2 text-sm text-slate-200">
                 <span>Paper</span>
                 <select
-                  value={selectedPaperId}
+                  value={activeSelectedPaperId}
                   onChange={(event) => setSelectedPaperId(event.target.value)}
                   className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-3 py-2 text-white outline-none"
                 >
