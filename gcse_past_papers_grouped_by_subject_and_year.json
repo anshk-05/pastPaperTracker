@@ -679,50 +679,120 @@
       "2024": [
         {
           "series": "June",
-          "paper_code": "J384/01, 02, 03",
-          "title": "Papers 1, 2, 3"
+          "paper_code": "J384/01",
+          "title": "Paper 1: Our Natural World"
+        },
+        {
+          "series": "June",
+          "paper_code": "J384/02",
+          "title": "Paper 2: People and Society"
+        },
+        {
+          "series": "June",
+          "paper_code": "J384/03",
+          "title": "Paper 3: Geographical Skills"
         }
       ],
       "2023": [
         {
           "series": "June",
-          "paper_code": "J384/01, 02, 03",
-          "title": "Papers 1, 2, 3"
+          "paper_code": "J384/01",
+          "title": "Paper 1: Our Natural World"
+        },
+        {
+          "series": "June",
+          "paper_code": "J384/02",
+          "title": "Paper 2: People and Society"
+        },
+        {
+          "series": "June",
+          "paper_code": "J384/03",
+          "title": "Paper 3: Geographical Skills"
         }
       ],
       "2022": [
         {
           "series": "June",
-          "paper_code": "J384/01, 02, 03",
-          "title": "Papers 1, 2, 3"
+          "paper_code": "J384/01",
+          "title": "Paper 1: Our Natural World"
+        },
+        {
+          "series": "June",
+          "paper_code": "J384/02",
+          "title": "Paper 2: People and Society"
+        },
+        {
+          "series": "June",
+          "paper_code": "J384/03",
+          "title": "Paper 3: Geographical Skills"
         }
       ],
       "2021": [
         {
           "series": "Nov",
-          "paper_code": "J384/01, 02, 03",
-          "title": "Papers 1, 2, 3"
+          "paper_code": "J384/01",
+          "title": "Paper 1: Our Natural World"
+        },
+        {
+          "series": "Nov",
+          "paper_code": "J384/02",
+          "title": "Paper 2: People and Society"
+        },
+        {
+          "series": "Nov",
+          "paper_code": "J384/03",
+          "title": "Paper 3: Geographical Skills"
         }
       ],
       "2020": [
         {
           "series": "Nov",
-          "paper_code": "J384/01, 02, 03",
-          "title": "Papers 1, 2, 3"
+          "paper_code": "J384/01",
+          "title": "Paper 1: Our Natural World"
+        },
+        {
+          "series": "Nov",
+          "paper_code": "J384/02",
+          "title": "Paper 2: People and Society"
+        },
+        {
+          "series": "Nov",
+          "paper_code": "J384/03",
+          "title": "Paper 3: Geographical Skills"
         }
       ],
       "2019": [
         {
           "series": "June",
-          "paper_code": "J384/01, 02, 03",
-          "title": "Papers 1, 2, 3"
+          "paper_code": "J384/01",
+          "title": "Paper 1: Our Natural World"
+        },
+        {
+          "series": "June",
+          "paper_code": "J384/02",
+          "title": "Paper 2: People and Society"
+        },
+        {
+          "series": "June",
+          "paper_code": "J384/03",
+          "title": "Paper 3: Geographical Skills"
         }
       ],
       "2018": [
         {
           "series": "June",
-          "paper_code": "J384/01, 02, 03",
-          "title": "Papers 1, 2, 3"
+          "paper_code": "J384/01",
+          "title": "Paper 1: Our Natural World"
+        },
+        {
+          "series": "June",
+          "paper_code": "J384/02",
+          "title": "Paper 2: People and Society"
+        },
+        {
+          "series": "June",
+          "paper_code": "J384/03",
+          "title": "Paper 3: Geographical Skills"
         }
       ]
     },
