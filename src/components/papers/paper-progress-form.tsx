@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Paper } from "@/lib/types";
 
 type PaperProgressFormProps = {
@@ -26,6 +26,15 @@ export function PaperProgressForm({ paper }: PaperProgressFormProps) {
   const [notes, setNotes] = useState(paper.performance.notes ?? "");
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    setStatus(paper.performance.status);
+    setScore(paper.performance.score?.toString() ?? "");
+    setPercentage(paper.performance.percentage?.toString() ?? "");
+    setGrade(paper.performance.grade ?? "");
+    setTopics(topicsToText(paper.performance.topicsForImprovement));
+    setNotes(paper.performance.notes ?? "");
+  }, [paper]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -139,7 +148,8 @@ export function PaperProgressForm({ paper }: PaperProgressFormProps) {
 
       <div className="flex items-center justify-between gap-3">
         <p className="text-sm text-slate-400">
-          {message ?? "Edit the paper details and save them to the local tracker."}
+          {message ??
+            "Add a score, percentage, or grade and this paper will count as completed."}
         </p>
         <button
           type="submit"

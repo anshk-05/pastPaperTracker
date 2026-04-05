@@ -16,6 +16,7 @@ import {
   Paper,
   PaperFormValues,
   PaperPerformance,
+  PaperStatus,
   RemovedPaper,
   StudySession,
   StudySessionWithPaper,
@@ -139,12 +140,37 @@ async function writeTrackerState(state: TrackerState) {
   await writeTrackerStateToFile(state);
 }
 
+function resolvePaperStatus(
+  status: PaperStatus,
+  values: Pick<PaperPerformance, "score" | "percentage" | "grade">,
+): PaperStatus {
+  if (status === "Completed") {
+    return "Completed";
+  }
+
+  if (
+    values.score != null ||
+    values.percentage != null ||
+    Boolean(values.grade?.trim())
+  ) {
+    return "Completed";
+  }
+
+  return "Not Started";
+}
+
 function normalisePerformance(values: PaperFormValues): PaperPerformance {
+  const grade = values.grade?.trim() || undefined;
+
   return {
-    status: values.status,
+    status: resolvePaperStatus(values.status, {
+      score: values.score,
+      percentage: values.percentage,
+      grade,
+    }),
     score: values.score,
     percentage: values.percentage,
-    grade: values.grade?.trim() || undefined,
+    grade,
     topicsForImprovement: values.topicsForImprovement.filter(Boolean),
     notes: values.notes?.trim() || undefined,
     updatedAt: new Date().toISOString().slice(0, 10),
@@ -164,10 +190,14 @@ function applyProgressToPaper(
   return {
     ...paper,
     performance: {
-      status: saved.status,
+      status: resolvePaperStatus(saved.status, {
+        score: saved.score,
+        percentage: saved.percentage,
+        grade: saved.grade,
+      }),
       score: saved.score,
       percentage: saved.percentage,
-      grade: saved.grade,
+      grade: saved.grade?.trim() || undefined,
       topicsForImprovement: saved.topicsForImprovement ?? [],
       notes: saved.notes,
       updatedAt: saved.updatedAt,

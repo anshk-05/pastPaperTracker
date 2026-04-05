@@ -149,7 +149,8 @@ export function PaperManagementConsole({
 
           <div className="md:col-span-2 xl:col-span-5 flex items-center justify-between gap-3">
             <p className="text-sm text-slate-400">
-              {message ?? "New papers start as Not Started until a score is logged."}
+              {message ??
+                "New papers start as Not Started until a score, percentage, or grade is logged."}
             </p>
             <button
               type="submit"
